@@ -1,14 +1,10 @@
 import { createApp } from 'vue'
 import SuppliersView from './components/SuppliersView.vue';
 import AccountingView from './components/AccountingView.vue';
-import TeamView from './components/TeamView.vue';
-import ProductsView from './components/ProductsView.vue';
 
 const componentMap = {
   'accounting-view': AccountingView,
   'suppliers-view': SuppliersView,
-  'team-view': TeamView,
-  'products-view': ProductsView,
   // add more components here, keyed by the data-vue-component value
 }
 function mountVueComponents() {

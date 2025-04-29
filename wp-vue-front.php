@@ -70,9 +70,7 @@ add_action('admin_enqueue_scripts', 'wp_vue_front_enqueue_scripts');
 function wp_vue_front_main_page() {
     $tabs = [
         'accounting' => 'Accounting',
-        'suppliers' => 'Suppliers',
-        'products' => 'Products',
-        'team' => 'Team'
+        'suppliers' => 'Suppliers'
     ];
     
     $active_tab = isset($_GET['tab']) && array_key_exists($_GET['tab'], $tabs) 
@@ -102,14 +100,6 @@ function wp_vue_front_main_page() {
                     require_once WP_VUE_FRONT_PLUGIN_PATH . 'admin-view/suppliers.php';
                     wp_vue_front_suppliers_admin_page();
                     break;
-                case 'products':
-                    require_once WP_VUE_FRONT_PLUGIN_PATH . 'admin-view/products.php';
-                    wp_vue_front_products_admin_page();
-                    break;
-                case 'team':
-                    require_once WP_VUE_FRONT_PLUGIN_PATH . 'admin-view/team.php';
-                    wp_vue_front_team_admin_page();
-                    break;
                 default:
                     break;
             } ?>
@@ -122,13 +112,9 @@ function wp_vue_front_main_page() {
 function wp_vue_front_register_ajax_handlers() {
     add_action('wp_ajax_wp_vue_front_accounting', 'wp_vue_front_handle_accounting');
     add_action('wp_ajax_wp_vue_front_suppliers', 'wp_vue_front_handle_suppliers');
-    add_action('wp_ajax_wp_vue_front_products', 'wp_vue_front_handle_products');
-    add_action('wp_ajax_wp_vue_front_team', 'wp_vue_front_handle_team');
 }
 add_action('init', 'wp_vue_front_register_ajax_handlers');
 
 // Include AJAX handlers
 require_once WP_VUE_FRONT_PLUGIN_PATH . 'includes/post-handler-accounting.php';
 require_once WP_VUE_FRONT_PLUGIN_PATH . 'includes/post-handler-suppliers.php';
-require_once WP_VUE_FRONT_PLUGIN_PATH . 'includes/post-handler-products.php';
-require_once WP_VUE_FRONT_PLUGIN_PATH . 'includes/post-handler-team.php';

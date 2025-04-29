@@ -55,6 +55,7 @@
             <template v-if="!supplier.isEditing">
               <button @click="startEdit(supplier)">Edit</button>
               <button @click="deleteSupplier(supplier)">Delete</button>
+              <span v-if="supplier.showSaved" class="saved-indicator">Saved!</span>
             </template>
             <template v-else>
               <button @click="saveEdit(supplier)">Save</button>
@@ -79,6 +80,7 @@ const props = defineProps<{
     phone: string;
     address: string;
     isEditing?: boolean;
+    showSaved?: boolean;
     nonce: string;
   }>;
 }>();
@@ -176,6 +178,10 @@ const saveEdit = async (supplier: typeof props.suppliers[0]) => {
     console.log('Supplier updated:', data);
     Object.assign(supplier, editingSupplier.value);
     supplier.isEditing = false;
+    supplier.showSaved = true;
+    setTimeout(() => {
+      supplier.showSaved = false;
+    }, 1000);
     editingSupplier.value = {
       id: 0,
       name: '',
@@ -247,33 +253,120 @@ const deleteSupplier = async (supplier: typeof props.suppliers[0]) => {
 </script>
 
 <style scoped>
+/* Card container */
+div {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 32px 24px;
+  max-width: 1100px;
+  margin: 40px auto;
+}
+
+h2 {
+  margin-bottom: 24px;
+  color: #2c3e50;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
 table {
   width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 24px;
+  background: #fafbfc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
+
 th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  padding: 14px 12px;
   text-align: left;
 }
+
 th {
-  background-color: #f2f2f2;
+  background: #f4f6f8;
+  color: #34495e;
+  font-weight: 600;
+  border-bottom: 2px solid #e1e4e8;
 }
+
+tbody tr:nth-child(even) {
+  background: #f9fafb;
+}
+
+tbody tr:hover {
+  background: #eaf6fb;
+  transition: background 0.2s;
+}
+
 button {
-  margin: 0 5px;
-  padding: 5px 10px;
+  margin: 0 4px;
+  padding: 6px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #27ae60;
+  color: #fff;
+  font-weight: 500;
   cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 2px rgba(39,174,96,0.08);
 }
+
+button[type="button"] {
+  background: #e67e22;
+}
+
+button:hover {
+  background: #219150;
+}
+
+button[type="button"]:hover {
+  background: #ca6f1e;
+}
+
 .supplier-form {
-  margin: 20px 0;
-  padding: 15px;
-  border: 1px solid #ddd;
-  background-color: #f9f9f9;
+  margin: 24px 0;
+  padding: 20px 18px;
+  border: 1px solid #e1e4e8;
+  background: #f8fafc;
+  border-radius: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
 }
+
 .supplier-form input {
-  margin-right: 10px;
-  padding: 5px;
-  width: 200px;
+  padding: 7px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 5px;
+  background: #fff;
+  font-size: 15px;
+  width: 180px;
+  transition: border 0.2s;
 }
-</style> 
+
+.supplier-form input:focus {
+  border: 1.5px solid #27ae60;
+  outline: none;
+}
+
+.saved-indicator {
+  color: #27ae60;
+  font-size: 14px;
+  margin-left: 8px;
+  font-weight: 500;
+  opacity: 0;
+  animation: fadeInOut 1s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+</style>
